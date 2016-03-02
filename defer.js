@@ -1,11 +1,13 @@
-/* jscs:disable maximumLineLength */
-(function (root, factory) { 'use strict'; var deps = [
-]; if (typeof define === 'function' && define.amd) { define(deps, function () { return factory.apply(root, [].slice.call(arguments)); }); } else if (typeof module === 'object' && module.exports) { for (var x = deps.length; x--;) { deps[x] = require(deps[x]); } module.exports = factory.apply(root, deps); }/* else { TODO: Default? } */}((typeof global === 'object' && global) || (typeof window === 'object' && window) || /* jshint -W040 */this/* jshint +W040 */,
-/* jscs:enable maximumLineLength */
+(function (context) {
+/*jscs:disable validateIndentation*//*jscs:enable validateIndentation*/
+// -----------------------------------------------------------------------------
 
-function () {
-  'use strict';
+'use strict';
 
+var id = 'defer';
+var dependencies = [];
+
+function factory() {
   /**
    * Executes `callback` as early in the next event loop as possible.
    *
@@ -16,4 +18,20 @@ function () {
   return (typeof process === 'object' && process.nextTick) ||
          (typeof setImmediate === 'function' && setImmediate) ||
          setTimeout;
-}));
+}
+
+// -----------------------------------------------------------------------------
+var x = dependencies.length; var o = 'object';
+context = typeof global === o ? global : typeof window === o ? window : context;
+if (typeof define === 'function' && define.amd) {
+  define(dependencies, function () {
+    return factory.apply(context, [].slice.call(arguments));
+  });
+} else if (typeof module === o && module.exports) {
+  for (; x--;) {dependencies[x] = require(dependencies[x]);}
+  module.exports = factory.apply(context, dependencies);
+} else {
+  for (; x--;) {dependencies[x] = context[dependencies[x]];}
+  context[id] = factory.apply(context, dependencies);
+}
+}(this));
